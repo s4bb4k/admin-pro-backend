@@ -4,33 +4,24 @@ const Usuario = require('../models/usuario');
 const Medico = require('../models/medico');
 const Hospital = require('../models/hospital');
 
-const getTodo = async (req, res = response) => {
+const getTodo = async(req, res = response ) => {
 
-    // traer un parametro de la req
     const busqueda = req.params.busqueda;
     const regex = new RegExp( busqueda, 'i' );
 
-    try {
-        
-        const [ usuarios, medicos, hospitales ] = await Promise.all([
-           Usuario.find({ nombre: regex }),
-           Medico.find({ nombre: regex }),
-           Hospital.find({ nombre, regex }),
-        ]);
+    const [ usuarios, medicos, hospitales ] = await Promise.all([
+        Usuario.find({ nombre: regex }),
+        Medico.find({ nombre: regex }),
+        Hospital.find({ nombre: regex }),
+    ]);
 
-        res.json({
-           ok: true,
-           usuarios, 
-           medicos,
-           hospitales
-        });
-        
-    } catch (error) {
-        res.status(500).json({
-            ok: false,
-            msg: 'Hable con el administrador'
-        })
-    }
+    res.json({
+        ok: true,
+        usuarios,
+        medicos,
+        hospitales
+    })
+
 }
 
 const getDocumentoColeccion = async (req, res = response) => {
